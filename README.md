@@ -114,11 +114,13 @@ By taking operations from passive observation to active autonomous remediation, 
 
 ---
 
-## ✨ Features
+## ✨ Features & Presentation
 
+- **🎨 Masterclass UI & Glassmorphism:** The platform features an ultra-premium, dark-themed interface built using advanced CSS glassmorphism, responsive canvas animations, and a cohesive `Aegis.AutoCost` neon visual identity.
+- **🚀 Immersive Marketing Suite:** Includes 4 standalone landing pages (`/`, `/features`, `/architecture`, `/impact`) equipped with live dashboard mockups, animated particle networks, and scroll-triggered reveals for hackathon pitches.
 - **🔴 Live Telemetry Engine:** Rejects the monolithic chatbot pattern. The dashboard operates on an asynchronous 2-second polling loop, reacting dynamically to agent resolutions.
 - **🧪 Scenario Simulator (Phase 3 Ready):** Let judges inject ANY custom enterprise scenario and watch the agents respond live via the `/simulator` tool.
-- **💬 CFO AI Chat:** Ask natural language questions like *"What's my biggest cost leak?"* backed directly by live anomaly streams.
+- **💬 CFO AI Chat:** Ask natural language questions like *"What's my biggest cost leak?"* backed directly by live anomaly streams—with zero LLM API latency.
 - **🏢 Executive Reporting:** Instantly export C-suite ready financial impact overviews.
 - **🛡️ Graceful Degradation:** If any agent step fails, the action defaults to `approval_required: True`, safely placing it in the enterprise review queue. No silent or destructive failures.
 
@@ -141,7 +143,7 @@ npm install
 npm run dev
 ```
 
-*The dashboard will be available at `http://localhost:5173`*
+*The application will boot on `http://localhost:5173` showcasing the Masterclass Landing Page.*
 
 ---
-*Built autonomously to reshape enterprise cloud efficiency.*
+*AutoCost Guardian AI — The standard for autonomous cost engineering.*

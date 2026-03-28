@@ -1,7 +1,7 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const coreNav = [
-  { to: '/',          icon: '📊', label: 'Dashboard' },
+  { to: '/dashboard', icon: '📊', label: 'Dashboard' },
   { to: '/anomalies', icon: '🔍', label: 'Anomaly Detection' },
   { to: '/actions',   icon: '⚡', label: 'Actions & Savings' },
   { to: '/data',      icon: '🗄️',  label: 'Raw Data' },
@@ -17,12 +17,29 @@ const aiNav = [
 ];
 
 export default function Sidebar() {
+  const navigate = useNavigate();
   return (
     <aside className="sidebar">
-      <div className="sidebar-brand">
-        <div className="brand-icon">🛡️</div>
-        <h1>AutoCost<br />Guardian AI</h1>
-        <p>Enterprise Cost Intelligence</p>
+      <div className="sidebar-brand" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+        {/* Animated Geometric Core Logo */}
+        <div style={{ position:'relative', width:46, height:46, display:'flex', alignItems:'center', justifyContent:'center', marginBottom:18 }}>
+          <div style={{ position:'absolute', inset:-2, background:'conic-gradient(from 180deg at 50% 50%, #6366f1 0deg, #a855f7 180deg, #ec4899 360deg)', borderRadius:'14px', filter:'blur(10px)', opacity:0.8, animation:'spin 3s linear infinite' }} />
+          <div style={{ position:'relative', width:42, height:42, background:'linear-gradient(135deg, #0f0728, #050117)', borderRadius:'12px', display:'flex', alignItems:'center', justifyContent:'center', border:'1px solid rgba(255,255,255,0.15)' }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" fill="url(#coreGradSide)"/>
+              <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <defs>
+                <linearGradient id="coreGradSide" x1="12" y1="2" x2="12" y2="12" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#e879f9"/>
+                  <stop offset="1" stopColor="#a855f7"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+        
+        <h1 style={{ fontSize: 18, fontWeight: 800, color: '#fff', lineHeight: 1.2, letterSpacing: '-0.02em' }}>AutoCost<br />Guardian AI</h1>
+        <p style={{ fontSize: 10, color: '#818cf8', fontWeight: 700, letterSpacing: '0.1em', marginTop: 6 }}>ENTERPRISE COST ENGINE</p>
       </div>
 
       <nav className="sidebar-nav">
