@@ -38,36 +38,52 @@ AutoCost Guardian maps directly over your enterprise data streams (Cloud APIs, V
 
 ```mermaid
 flowchart TD
-    %% Styling Configuration
-    classDef default fill:#1e293b,stroke:#a855f7,stroke-width:1px,color:#fff;
-    classDef agent fill:#0f172a,stroke:#6366f1,stroke-width:2px,color:#fff,font-weight:bold;
-    
-    START([🔁 2-Second Telemetry Loop]) --> DA
-    
-    DA[🗄️ Data Agent] -->|Raw Enterprise Telemetry| AA
-    AA[🔍 Anomaly Agent] -->|Detected Deviations| RCA
+    START([🔁 Autonomous Loop\nEvery 2 Seconds]) --> DA
 
-    subgraph ROUTER ["🧠 Smart Routing Layer (Simulated for Demo Speed)"]
-        direction LR
-        RCA -->|Low Complexity| L8B[Llama-3-8B logic]
-        RCA -->|High Complexity| G15[Gemini-1.5-Pro logic]
+    subgraph OBSERVE["🗄️ STAGE 1 — Data Agent"]
+        DA[Load Cost Data\nAll 4 Enterprise Domains] --> DA2{Is data\nstale > 2s?}
+        DA2 -- Yes --> DA3[Apply live volatility\nEC2 cost drift / SLA jitter\nFinOps accrual]
+        DA2 -- No --> AA
+        DA3 --> AA
     end
-    
-    L8B --> DE
-    G15 --> DE
-    
-    DE[⚖️ Decision Agent] -->|Strategic Action Plan| ACT
-    
-    subgraph EXECUTION ["⚡ Execution & Guardrails"]
-        ACT -->|Approval Required: False| AUTO[Autonomous Execution: Shutdown]
-        ACT -->|Approval Required: True| HITL[Human Workflow: CFO Approval]
-        AUTO -.->|Simulated API Failure\nGraceful Degradation| HITL
-    end
-    
-    AUTO --> LOGS[(Immutable Audit Log)]
-    HITL --> LOGS
 
-    class DA,AA,RCA,DE,ACT agent;
+    subgraph DETECT["🔍 STAGE 2 — Anomaly Agent"]
+        AA[Scan each record\nagainst baseline policies] --> AA2{Anomaly\nDetected?}
+        AA2 -- No --> END1([✅ All Clear\nNo Action])
+        AA2 -- Yes --> AA3[Tag with anomaly_type:\nIDLE_HIGH_COST\nDUPLICATE_VENDOR\nCLOUD_SPEND_SPIKE\nSLA_BREACH_PREDICTION]
+        AA3 --> RCA
+    end
+
+    subgraph DIAGNOSE["🧠 STAGE 3 — Root Cause Agent"]
+        RCA[Enrich anomaly\nwith root cause context] --> RCA2{Classify\nRoot Cause}
+        RCA2 -- Idle resource --> RC1[Instance idle, waste]
+        RCA2 -- Scaler error --> RC2[Misconfigured rule]
+        RCA2 -- Vendor overlap --> RC3[Duplicate entity]
+        RCA2 -- SLA trajectory --> RC4[Trending to miss SLA]
+        RC1 --> DE
+        RC2 --> DE
+        RC3 --> DE
+        RC4 --> DE
+    end
+
+    subgraph DECIDE["⚖️ STAGE 4 — Decision Agent"]
+        DE[Formulate action plan\nCalculate savings %] --> DE2{Risk Level?}
+        DE2 -- Low Risk --> AUTO[Set approval_required = False]
+        DE2 -- High Risk --> REVIEW[Set approval_required = True]
+        AUTO --> ACT
+        REVIEW --> ACT
+    end
+
+    subgraph EXECUTE["⚡ STAGE 5 — Action Agent + Audit"]
+        ACT{Approval\nRequired?}
+        ACT -- No --> AE[Execute Autonomously:\nShutdown Instance, etc.]
+        ACT -- Yes --> HM[CFO Dashboard:\nApprove / Reject UI]
+        HM -- Approved --> AE
+        HM -- Rejected --> LOG2[Log Rejection\nto Audit]
+        AE --> LOG[Write to Immutable Audit Log]
+        LOG --> LOOP([🔁 Loop Continues])
+        LOG2 --> LOOP
+    end
 ```
 
 ---
