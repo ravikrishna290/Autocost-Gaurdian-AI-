@@ -41,36 +41,32 @@ flowchart TD
     %% Styling Configuration
     classDef default fill:#1e293b,stroke:#a855f7,stroke-width:1px,color:#fff;
     classDef agent fill:#0f172a,stroke:#6366f1,stroke-width:2px,color:#fff,font-weight:bold;
-    classDef action fill:#022c22,stroke:#10b981,stroke-width:1px,color:#6ee7b7;
-    classDef human fill:#450a0a,stroke:#ef4444,stroke-width:1px,color:#fca5a5;
     
     START([🔁 2-Second Telemetry Loop]) --> DA
+    
+    DA[🗄️ Data Agent] -->|Raw Enterprise Telemetry| AA
+    AA[🔍 Anomaly Agent] -->|Detected Deviations| RCA
 
-    subgraph ORCHESTRATION ["5-Agent Sequential Pipeline"]
-        DA[🗄️ Data Agent] -->|Raw Enterprise Telemetry| AA
-        
-        AA[🔍 Anomaly Agent] -->|Detected Deviations| RCA
-        
-        RCA[🧠 Root Cause Agent] -->|Enriched Context| DE
-        
-        DE[⚖️ Decision Agent] -->|Strategic Action Plan| ACT
-        
-        ACT[⚡ Action Agent] -->|Executes Resolution| LOGS[(Immutable Audit Log)]
+    subgraph ROUTER ["🧠 Smart Routing Layer (Simulated for Demo Speed)"]
+        direction LR
+        RCA -->|Low Complexity| L8B[Llama-3-8B logic]
+        RCA -->|High Complexity| G15[Gemini-1.5-Pro logic]
     end
-
-    %% Intelligent Routing Detail
-    RCA -.->|Low Complexity Tasks| L8B(Llama-3-8B \n Cost: $0)
-    RCA -.->|High Complexity Tasks| G15(Gemini-1.5-Pro \n Intense Reasoning)
-    L8B -.-> DE
-    G15 -.-> DE
-
-    %% Execution Logic Detail
-    ACT -.->|Safe Actions| AUTO[Autonomous Execution:\nShutdown & Config Fixes]:::action
-    ACT -.->|High Risk| HITL[Human Workflow:\nCFO Approval Dashboard]:::human
     
-    %% Error Recovery (Autonomy Depth)
-    AUTO -.->|Graceful Degradation\nCloud API Rate Limits| HITL
+    L8B --> DE
+    G15 --> DE
     
+    DE[⚖️ Decision Agent] -->|Strategic Action Plan| ACT
+    
+    subgraph EXECUTION ["⚡ Execution & Guardrails"]
+        ACT -->|Approval Required: False| AUTO[Autonomous Execution: Shutdown]
+        ACT -->|Approval Required: True| HITL[Human Workflow: CFO Approval]
+        AUTO -.->|Simulated API Failure\nGraceful Degradation| HITL
+    end
+    
+    AUTO --> LOGS[(Immutable Audit Log)]
+    HITL --> LOGS
+
     class DA,AA,RCA,DE,ACT agent;
 ```
 
