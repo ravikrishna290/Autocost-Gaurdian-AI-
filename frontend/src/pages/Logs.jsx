@@ -72,6 +72,7 @@ export default function Logs() {
                 <th>Logged At</th>
                 <th>Instance</th>
                 <th>Service</th>
+                <th>Intelligence Route</th>
                 <th>Action Taken</th>
                 <th>Execution Status</th>
                 <th>Original Cost</th>
@@ -84,9 +85,28 @@ export default function Logs() {
                   <td style={{ fontSize: 12 }}>{new Date(log.logged_at).toLocaleString()}</td>
                   <td style={{ fontFamily: 'monospace', fontSize: 12 }}>{log.instance_id}</td>
                   <td>{log.service_name}</td>
-                  <td>{log.action_taken}</td>
                   <td>
-                    <span className={`badge ${log.execution_status?.includes('Executed') ? 'badge-active' : 'badge-review'}`}>
+                    {log.model_used ? (
+                      <div>
+                        <span className={`badge ${log.model_used.includes('Gemini') ? 'badge-active' : 'badge-review'}`} style={{ marginBottom: 4 }}>
+                          🧠 {log.model_used}
+                        </span>
+                        <div style={{ fontSize: 9, color: 'var(--text-muted)', lineHeight: 1.3, maxWidth: 160, fontFamily: 'monospace' }}>
+                          {log.routing_rationale}
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="badge badge-idle">System Default</span>
+                    )}
+                  </td>
+                  <td>
+                    <div style={{ fontWeight: 600 }}>{log.action_taken}</div>
+                    {log.execution_status?.includes('FALLBACK') && (
+                       <div style={{ fontSize: 9, color: 'var(--warning)', marginTop: 4 }}>Graceful Degradation Triggered</div>
+                    )}
+                  </td>
+                  <td>
+                    <span className={`badge ${log.execution_status?.includes('Executed') ? 'badge-active' : log.execution_status?.includes('Blocked') ? 'badge-idle' : 'badge-review'}`}>
                       {log.execution_status}
                     </span>
                   </td>

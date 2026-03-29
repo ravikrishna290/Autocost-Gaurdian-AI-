@@ -291,6 +291,7 @@ def run_pipeline_viz():
                 "output": f"Formulated {len(anomalies)} remediation strategies",
                 "details": {
                     "actions": list(set(a.get('recommended_action') for a in anomalies)),
+                    "routes_to": list(set(a.get('model_used') for a in anomalies if a.get('model_used'))),
                     "requires_approval": len([a for a in anomalies if a.get('approval_required')])
                 }
             },

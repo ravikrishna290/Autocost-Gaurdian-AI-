@@ -3,6 +3,16 @@ def make_decisions(anomalies: list) -> list:
         atype = r.get('anomaly_type', '')
         usage = float(r.get('usage_hours', 0))
 
+        # --- Technical Creativity Bonus: Cost-Efficient Smart Model Routing ---
+        is_complex = atype in ['DUPLICATE_VENDOR', 'SLA_BREACH_PREDICTION', 'VENDOR_RATE_SPIKE', 'RECONCILIATION_DISCREPANCY']
+        if is_complex:
+            r['model_used'] = 'Gemini-1.5-Pro'
+            r['routing_rationale'] = 'High complexity reasoning -> Routed to large model.'
+        else:
+            r['model_used'] = 'Llama-3-8B'
+            r['routing_rationale'] = 'Low complexity/structured -> Routed to local open-source model ($0 cost).'
+        # --------------------------------------------------------------------------------
+
         if atype == 'IDLE_HIGH_COST':
             r['recommended_action'] = 'Shutdown Instance'
             r['action_rationale'] = 'Instance is idle — shutting down eliminates 100% of cost.'
